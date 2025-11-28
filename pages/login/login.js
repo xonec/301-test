@@ -268,29 +268,4 @@ Page({
       this.setData({ loading: false });
     }
   },
-
-  /**
-   * 获取用户资料(已废弃，会自动获取示例)
-   */
-  async onGetUserProfile() {
-    try {
-      const result = await authService.getUserProfile();
-      
-      if (result.success) {
-        this.setData({
-          'registerForm.nickName': result.data.nickName,
-          'registerForm.avatarUrl': result.data.avatarUrl
-        });
-
-        wx.showToast({
-          title: '资料获取成功',
-          icon: 'success'
-        });
-      } else {
-        this.setData({ error: result.error });
-      }
-    } catch (error) {
-      this.setData({ error: error.message });
-    }
-  }
 });
