@@ -1,0 +1,172 @@
+<view class="page">
+  <view class="safe-top" />
+  <view class="header">外包</view>
+  <view class="body">
+    <scroll-view class="main" scroll-y="true">
+      <view class="top-bar">
+        <text class="label">全局数量:</text>
+        <input
+          class="global-input"
+          type="digit"
+          value="{{globalCount}}"
+          bindinput="onGlobalInput"
+        />
+        <button class="btn fill" bindtap="onFill">填充</button>
+        <button class="btn template" bindtap="onOpenTemplate">选择模板</button>
+      </view>
+
+      <view class="template-card">
+        <text class="template-title">当前模板：</text>
+        <text class="template-name">{{currentTemplateName}}</text>
+      </view>
+
+      <view class="bucket-grid bucket-grid-5">
+        <view class="bucket" wx:for="{{bucketsAB}}" wx:key="name">
+          <text class="bucket-label">{{item.name}}桶</text>
+          <input
+            class="bucket-input"
+            type="digit"
+            value="{{item.value}}"
+            data-key="{{item.key}}"
+            bindinput="onBucketInput"
+          />
+        </view>
+      </view>
+
+      <view class="bucket-grid bucket-grid-5">
+        <view class="bucket" wx:for="{{bucketsCD}}" wx:key="name">
+          <text class="bucket-label">{{item.name}}桶</text>
+          <input
+            class="bucket-input"
+            type="digit"
+            value="{{item.value}}"
+            data-key="{{item.key}}"
+            bindinput="onBucketInput"
+          />
+        </view>
+      </view>
+
+      <view class="bucket-grid bucket-grid-5">
+        <view class="bucket" wx:for="{{bucketsEF}}" wx:key="name">
+          <text class="bucket-label">{{item.name}}桶</text>
+          <input
+            class="bucket-input"
+            type="digit"
+            value="{{item.value}}"
+            data-key="{{item.key}}"
+            bindinput="onBucketInput"
+          />
+        </view>
+      </view>
+
+      <view class="bucket-grid bucket-grid-5">
+        <view class="bucket" wx:for="{{bucketsGJ}}" wx:key="name">
+          <text class="bucket-label">{{item.name}}桶</text>
+          <input
+            class="bucket-input"
+            type="digit"
+            value="{{item.value}}"
+            data-key="{{item.key}}"
+            bindinput="onBucketInput"
+          />
+        </view>
+      </view>
+
+      <view class="extra-grid">
+        <view class="extra-item" wx:for="{{extras}}" wx:key="key">
+          <text class="extra-label">{{item.label}}</text>
+          <input
+            class="extra-input"
+            type="digit"
+            value="{{item.value}}"
+            data-key="{{item.key}}"
+            bindinput="onExtraInput"
+          />
+        </view>
+      </view>
+
+      <view class="pair-grid">
+        <view class="pair-item">
+          <text class="pair-label">瓶/件</text>
+          <input
+            class="pair-input"
+            type="digit"
+            value="{{bottlePerCase}}"
+            bindinput="onBottlePerCaseInput"
+          />
+        </view>
+        <view class="pair-item">
+          <text class="pair-label">件/托</text>
+          <input
+            class="pair-input"
+            type="digit"
+            value="{{casePerPallet}}"
+            bindinput="onCasePerPalletInput"
+          />
+        </view>
+      </view>
+
+      <view class="btn-row">
+        <button class="btn primary" bindtap="onCalc">计算</button>
+        <button class="btn danger" bindtap="onClear">清空</button>
+        <button class="btn success" bindtap="onCopy">复制结果</button>
+      </view>
+
+      <view class="summary-card">
+        <view class="summary-grid">
+          <view class="summary-item">
+            <text class="summary-label">桶数:</text>
+            <text class="summary-value">{{summary.bucketCount}}桶</text>
+          </view>
+          <view class="summary-item">
+            <text class="summary-label">入库件数:</text>
+            <text class="summary-value">{{summary.caseText}}</text>
+          </view>
+          <view class="summary-item">
+            <text class="summary-label">入库瓶数:</text>
+            <text class="summary-value">{{summary.bottleCount}}瓶</text>
+          </view>
+          <view class="summary-item">
+            <text class="summary-label">含取样瓶数:</text>
+            <text class="summary-value">{{summary.bottleWithSample}}瓶</text>
+          </view>
+          <view class="summary-item">
+            <text class="summary-label">标签实用数:</text>
+            <text class="summary-value">{{summary.labelCount}}张</text>
+          </view>
+          <view class="summary-item">
+            <text class="summary-label">托码:</text>
+            <text class="summary-value">{{summary.palletText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="pager-card">
+        <view class="pager-header">
+          <text class="pager-title">第{{pager.current}}托/共{{pager.total}}托</text>
+          <text class="pager-total">{{pager.bottleCount}}瓶</text>
+        </view>
+        <view class="pager-range-box">
+          <text class="pager-range-text">{{pager.rangeText}}</text>
+        </view>
+        <view class="pager-actions">
+          <button class="pager-btn" bindtap="onFirst">首托</button>
+          <button class="pager-btn" bindtap="onPrev">上一托</button>
+          <button class="pager-btn primary" bindtap="onNext">下一托</button>
+          <button class="pager-btn" bindtap="onLast">尾托</button>
+        </view>
+      </view>
+
+      <view class="pager-jump-line">
+        <input
+          class="pager-input-line"
+          type="digit"
+          placeholder="托号"
+          value="{{pagerInput}}"
+          bindinput="onPagerInput"
+        />
+        <button class="pager-jump-btn" bindtap="onJump">跳转</button>
+      </view>
+    </scroll-view>
+  </view>
+</view>

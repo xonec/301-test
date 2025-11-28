@@ -1,0 +1,301 @@
+.page {
+  min-height: 100vh;
+  padding: 24rpx;
+  background: #f3f4f6;
+}
+
+.safe-top {
+  height: 40rpx;
+}
+
+.header {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 24rpx;
+}
+
+.body {
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+}
+
+.main {
+  box-sizing: border-box;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.label {
+  font-size: 26rpx;
+  color: #374151;
+}
+
+.global-input {
+  width: 160rpx;
+  padding: 12rpx;
+  border-radius: 12rpx;
+  border: 1rpx solid #d1d5db;
+}
+
+.btn {
+  border-radius: 12rpx;
+  padding: 12rpx 20rpx;
+  font-size: 24rpx;
+}
+
+.btn.fill {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.btn.template {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.template-card {
+  background: #eff6ff;
+  border-radius: 16rpx;
+  padding: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.template-title {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.template-name {
+  font-size: 28rpx;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.bucket-grid {
+  display: grid;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.bucket-grid-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.bucket {
+  display: flex;
+  flex-direction: column;
+}
+
+.bucket-label {
+  font-size: 24rpx;
+  color: #374151;
+  margin-bottom: 6rpx;
+}
+
+.bucket-input {
+  border-radius: 12rpx;
+  border: 1rpx solid #d1d5db;
+  padding: 12rpx;
+}
+
+.extra-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.extra-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.extra-label {
+  font-size: 24rpx;
+  color: #374151;
+  margin-bottom: 6rpx;
+}
+
+.extra-input {
+  border-radius: 12rpx;
+  border: 1rpx solid #d1d5db;
+  padding: 12rpx;
+}
+
+.pair-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.pair-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.pair-label {
+  font-size: 24rpx;
+  color: #374151;
+  margin-bottom: 6rpx;
+}
+
+.pair-input {
+  border-radius: 12rpx;
+  border: 1rpx solid #d1d5db;
+  padding: 12rpx;
+}
+
+.btn-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 12rpx;
+  margin-bottom: 24rpx;
+}
+
+.btn.primary {
+  flex: 1;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.btn.danger {
+  flex: 1;
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.btn.success {
+  flex: 1;
+  background: #22c55e;
+  color: #ffffff;
+}
+
+.summary-card {
+  background: #f9fafb;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16rpx;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-label {
+  font-size: 24rpx;
+  color: #374151;
+}
+
+.summary-value {
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.pager-card {
+  background: #f9fafb;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.pager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.pager-title {
+  font-size: 26rpx;
+  font-weight: 500;
+}
+.pager-total {
+  font-size: 26rpx;
+  color: #2563eb;
+}
+
+.pager-range-box {
+  background: #f3f4f6;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.pager-range-text {
+  font-size: 26rpx;
+  text-align: center;
+}
+
+.pager-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.pager-btn {
+  flex: 1;
+  margin: 0 6rpx;
+  border-radius: 12rpx;
+  padding: 12rpx 0;
+  font-size: 26rpx;
+  background: #ffffff;
+  border: 1rpx solid #e5e7eb;
+}
+
+.pager-btn.primary {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+.pager-jump {
+  display: flex;
+  flex-direction: row;
+}
+
+.pager-input {
+  flex: 1;
+  padding: 12rpx;
+  border-radius: 12rpx 0 0 12rpx;
+  border: 1rpx solid #d1d5db;
+}
+
+.pager-jump-line {
+  margin-top: 8rpx;
+  margin-bottom: 24rpx;
+  display: flex;
+  flex-direction: row;
+}
+
+.pager-input-line {
+  flex: 1;
+  padding: 12rpx;
+  border-radius: 12rpx 0 0 12rpx;
+  border: 1rpx solid #d1d5db;
+}
+
+.pager-jump-btn {
+  width: 120rpx;
+  text-align: center;
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 0 12rpx 12rpx 0;
+  border: 1rpx solid #2563eb;
+  font-size: 26rpx;
+}

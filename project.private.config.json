@@ -1,0 +1,24 @@
+{
+  "libVersion": "3.11.2",
+  "projectname": "WeChatProjects-301-main",
+  "setting": {
+    "urlCheck": false,
+    "coverView": true,
+    "lazyloadPlaceholderEnable": false,
+    "skylineRenderEnable": true,
+    "preloadBackgroundData": false,
+    "autoAudits": false,
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "showShadowRootInWxmlPanel": true,
+    "useStaticServer": false,
+    "useLanDebug": false,
+    "showES6CompileOption": false,
+    "compileHotReLoad": true,
+    "bigPackageSizeSupport": true,
+    "checkInvalidKey": true,
+    "useIsolateContext": true,
+    "ignoreDevUnusedFiles": true
+  },
+  "condition": {}
+}

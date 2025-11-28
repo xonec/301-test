@@ -1,0 +1,28 @@
+<view class="page">
+  <view class="safe-top" />
+  <view class="header">标准差</view>
+  <view class="body">
+    <view class="field">
+      <text class="label">输入数字 (用空格或换行符分隔):</text>
+      <textarea class="textarea" placeholder="请输入数字，用空格或换行符分隔" value="{{input}}" bindinput="onInput" />
+    </view>
+    <view class="btn-row">
+      <button class="btn primary" bindtap="onCalculate">计算</button>
+      <button class="btn danger" bindtap="onClear">清空</button>
+    </view>
+    <view class="result-card">
+      <view class="row">
+        <text class="label">总组数:</text>
+        <text class="value">{{count}}</text>
+      </view>
+      <view class="row">
+        <text class="label">平均值:</text>
+        <text class="value">{{avg}}</text>
+      </view>
+      <view class="row">
+        <text class="label">样本标准差:</text>
+        <text class="value">{{std}}</text>
+      </view>
+    </view>
+  </view>
+</view>

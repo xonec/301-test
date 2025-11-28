@@ -1,0 +1,60 @@
+{
+  "darkmode": true,
+  "pages": [
+    "pages/login/login",
+    "pages/statistics-outer/statistics-outer",
+    "pages/statistics-inner/statistics-inner",
+    "pages/statistics-std/statistics-std",
+    "pages/user/user"
+  ],
+  "subpackages": [],
+  "themeLocation": "theme.json",
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-navbar": "tdesign-miniprogram/navbar/navbar"
+  },
+  "window": {
+    "navigationBarTitleText": "TDesign",
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "@navTxtStyle"
+  },
+  "resolveAlias": {
+    "@behaviors/*": "behaviors/*"
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "rendererOptions": {
+    "skyline": {
+      "disableABTest": true,
+      "defaultDisplayBlock": true,
+      "defaultContentBox": true,
+      "sdkVersionBegin": "3.4.3",
+      "sdkVersionEnd": "15.255.255"
+    }
+  },
+  "tabBar": {
+    "color": "#6B7280",
+    "selectedColor": "#2563EB",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/statistics-outer/statistics-outer",
+        "text": "外包"
+      },
+      {
+        "pagePath": "pages/statistics-inner/statistics-inner",
+        "text": "内包"
+      },
+      {
+        "pagePath": "pages/statistics-std/statistics-std",
+        "text": "标准差"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我的"
+      }
+    ]
+  }
+}

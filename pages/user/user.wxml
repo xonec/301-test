@@ -1,0 +1,100 @@
+<!-- 用户中心页面 -->
+<view class="user-container">
+  <!-- 编辑模式 -->
+  <view wx:if="{{ isEditing }}" class="edit-mode">
+    <form bindsubmit="onEditSubmit" class="edit-form">
+      <!-- 头像编辑 -->
+      <view class="form-section">
+        <text class="form-label">头像</text>
+        <button
+          class="avatar-button"
+          open-type="chooseAvatar"
+          bind:chooseavatar="onChooseAvatar"
+        >
+          <image class="avatar-img" src="{{ tempUserInfo.avatarUrl }}" mode="aspectFill" />
+        </button>
+      </view>
+
+      <!-- 昵称编辑 -->
+      <view class="form-section">
+        <text class="form-label">昵称</text>
+        <input
+          class="input-field"
+          type="nickname"
+          placeholder="请输入昵称"
+          value="{{ tempUserInfo.nickName }}"
+          bindinput="onNickNameInput"
+          maxlength="20"
+        />
+        <view class="char-count">
+          <text>{{ tempUserInfo.nickName.length }}/20</text>
+        </view>
+      </view>
+
+      <!-- 编辑按钮 -->
+      <view class="edit-actions">
+        <button
+          class="btn btn-primary"
+          form-type="submit"
+          loading="{{ loading }}"
+          disabled="{{ loading }}"
+        >
+          <text>保存修改</text>
+        </button>
+        <button
+          class="btn btn-secondary"
+          bindtap="onCancelEdit"
+          disabled="{{ loading }}"
+        >
+          <text>取消</text>
+        </button>
+      </view>
+    </form>
+  </view>
+
+  <!-- 正常显示模式 -->
+  <view wx:elif="{{ userInfo }}" class="user-section">
+    <!-- 用户信息 -->
+    <view class="user-header">
+      <image
+        class="avatar"
+        src="{{ userInfo.avatarUrl || userInfo.avatar }}"
+        mode="aspectFill"
+      />
+      <view class="user-details">
+        <view class="nickname">{{ userInfo.nickName || userInfo.nick_name }}</view>
+        <view class="user-id">ID: {{ userInfo.userId || userInfo.user_id }}</view>
+      </view>
+    </view>
+
+    <!-- 用户操作 -->
+    <view class="user-actions">
+      <button class="action-btn" bindtap="onEditInfo">
+        <text>编辑个人信息</text>
+      </button>
+      <button class="action-btn logout-btn" bindtap="onLogout">
+        <text>退出登录</text>
+      </button>
+    </view>
+
+    <!-- 其他信息 -->
+    <view class="user-info-list">
+      <view class="info-item">
+        <text class="info-label">账户状态</text>
+        <text class="info-value">正常</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">登录方式</text>
+        <text class="info-value">微信授权</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 未登录状态 -->
+  <view wx:else class="no-login">
+    <text class="no-login-text">未登录</text>
+    <button class="login-btn" open-type="navigateTo" data-url="/pages/login/login">
+      <text>前往登录</text>
+    </button>
+  </view>
+</view>

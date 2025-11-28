@@ -1,0 +1,105 @@
+<!-- 登录注册页面 -->
+<view class="login-container">
+  <!-- 错误提示 -->
+  <view wx:if="{{ error }}" class="error-message">
+    <text>{{ error }}</text>
+  </view>
+
+  <!-- Tab切换 -->
+  <view class="tab-bar">
+    <view
+      class="tab-item {{ activeTab === 'login' ? 'active' : '' }}"
+      data-tab="login"
+      bindtap="onTabChange"
+    >
+      <text>登录</text>
+    </view>
+    <view
+      class="tab-item {{ activeTab === 'register' ? 'active' : '' }}"
+      data-tab="register"
+      bindtap="onTabChange"
+    >
+      <text>注册</text>
+    </view>
+  </view>
+
+  <!-- 登录Tab -->
+  <view class="tab-content" wx:if="{{ activeTab === 'login' }}">
+    <view class="login-section">
+      <view class="section-title">
+        <text>微信一键登录</text>
+      </view>
+      <view class="section-desc">
+        <text>使用微信账号快速登录，无需记录密码</text>
+      </view>
+      
+      <button
+        class="btn btn-primary"
+        bindtap="onWechatLogin"
+        disabled="{{ loading }}"
+        loading="{{ loading }}"
+      >
+        <text>{{ loading ? '登录中...' : '微信一键登录' }}</text>
+      </button>
+
+      <view class="tips">
+        <text>首次登录将自动创建账户</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 注册Tab -->
+  <view class="tab-content" wx:if="{{ activeTab === 'register' }}">
+    <form bindsubmit="onRegisterSubmit" class="register-form">
+      <view class="register-section">
+        <!-- 头像选择 (使用微信官方 chooseAvatar) -->
+        <view class="form-group">
+          <text class="label">头像</text>
+          <button 
+            class="avatar-button" 
+            open-type="chooseAvatar" 
+            bind:chooseavatar="onChooseAvatar"
+          >
+            <image
+              class="avatar-img"
+              src="{{ registerForm.avatarUrl }}"
+              mode="aspectFill"
+            />
+          </button>
+          <text class="avatar-hint">{{ registerForm.avatarUrl ? '已选择' : '点击选择头像' }}</text>
+        </view>
+
+        <!-- 昵称输入 (使用微信官方 nickname input) -->
+        <view class="form-group">
+          <text class="label">昵称</text>
+          <input
+            class="input-field"
+            type="nickname"
+            placeholder="请输入昵称"
+            value="{{ registerForm.nickName }}"
+            bindinput="onNickNameInput"
+            bindblur="onNickNameBlur"
+            maxlength="20"
+          />
+          <view class="char-count">
+            <text>{{ registerForm.nickName.length }}/20</text>
+          </view>
+        </view>
+
+        <!-- 注册按钮 -->
+        <button
+          class="btn btn-primary"
+          form-type="submit"
+          disabled="{{ loading || !registerForm.nickName || !registerForm.avatarUrl }}"
+          loading="{{ loading }}"
+        >
+          <text>{{ loading ? '注册中...' : '完成注册' }}</text>
+        </button>
+
+        <view class="tips">
+          <text>注册即代表同意服务条款</text>
+        </view>
+      </view>
+    </form>
+  </view>
+</view>
