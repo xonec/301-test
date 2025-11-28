@@ -181,7 +181,9 @@ Page({
       let finalAvatarUrl = avatarUrl;
       let localAvatarPath = null;
       
-      if (avatarUrl.startsWith('file://')) {
+      const isLocalAvatar = avatarUrl.startsWith('file://') || avatarUrl.startsWith('wxfile://');
+
+      if (isLocalAvatar) {
         console.log('[登录页] 检测到本地文件，开始保存到本地缓存');
         const saveResult = await authService.saveAvatarLocally(avatarUrl);
         

@@ -325,7 +325,19 @@ function request(url, options = {}) {
         ...(options.header || {})
       },
       success: (res) => {
-        resolve(res.data);
+        const { statusCode, data } = res;
+
+        if (statusCode < 200 || statusCode >= 300) {
+          console.error('[request] HTTP 状态异常', {
+            url: fullUrl,
+            statusCode,
+            dataSnippet: typeof data === 'string' ? data.substring(0, 200) : data
+          });
+          reject(new Error(`HTTP ${statusCode}: 请求失败 (${fullUrl})`));
+          return;
+        }
+
+        resolve(data);
       },
       fail: (err) => {
         reject(new Error(err.errMsg || '请求失败'));
