@@ -7,8 +7,7 @@
  */
 
 const authService = require('./auth');
-
-const API_BASE_URL = 'http://10.0.0.108';
+const { API_BASE_URL } = require('../utils/apiConfig');
 
 /**
  * 发送HTTP请求（带token自动添加）

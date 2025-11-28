@@ -8,7 +8,7 @@
  *   4. 本地存储管理
  */
 
-const API_BASE_URL = 'http://10.0.0.108';
+const { API_BASE_URL, ENDPOINTS } = require('../utils/apiConfig');
 const TOKEN_KEY = 'USER_TOKEN';
 const USER_INFO_KEY = 'USER_INFO';
 const TOKEN_EXPIRE_KEY = 'TOKEN_EXPIRE_TIME';
@@ -83,7 +83,7 @@ async function wechatLogin() {
 
         try {
           // 第二步：向后台发送code进行服务端验证
-          const loginResponse = await request('/auth/login', {
+          const loginResponse = await request(ENDPOINTS.LOGIN, {
             method: 'POST',
             data: {
               code: loginRes.code
@@ -172,7 +172,7 @@ async function register(nickName, avatarUrl) {
     }
 
     // 第二步：向后台提交用户信息
-    const registerResponse = await request('/auth/register', {
+    const registerResponse = await request(ENDPOINTS.REGISTER, {
       method: 'POST',
       data: {
         nick_name: nickName,
@@ -220,7 +220,7 @@ async function fetchUserInfo() {
       };
     }
 
-    const response = await request('/auth/user/info', {
+    const response = await request(ENDPOINTS.USER_INFO, {
       method: 'GET',
       header: {
         'Authorization': `Bearer ${token}`
@@ -262,7 +262,7 @@ async function refreshToken() {
       };
     }
 
-    const response = await request('/auth/refresh-token', {
+    const response = await request(ENDPOINTS.REFRESH_TOKEN, {
       method: 'POST',
       data: {
         refresh_token: refreshToken

@@ -8,26 +8,19 @@
  * - 支持 Mock 模式用于开发测试
  */
 
+const { API_BASE_URL, ENDPOINTS } = require('./utils/apiConfig');
+
 // 配置项
 const CONFIG = {
-  // 后台 API 地址（需要根据实际情况修改）
-  // 本地开发: 'http://localhost:8000'
-  // LikeAdmin本地: 'http://www.likeadmin.localhost'
-  // 测试服务器: 'http://10.0.0.108'
-  // 线上: 'https://api.example.com'
-  API_BASE_URL: 'http://10.0.0.108',
-  
+  // 后端 API 地址来自用户提供的隧道域名
+  API_BASE_URL,
+
   // 是否启用 Mock 模式（用于开发测试，无需后台）
   USE_MOCK: false,
-  
+
   // 接口端点配置（根据 LikeAdmin MCP 服务器定义）
   ENDPOINTS: {
-    LOGIN: '/api/login/mnpLogin',           // 小程序登录
-    REGISTER: '/api/login/mnpLogin',        // 先用登录接口，后续可调整
-    USER_INFO: '/api/user/getUserInfo',     // 获取用户信息
-    REFRESH_TOKEN: '/api/login/refresh',    // 刷新 token
-    UPDATE_USER: '/api/user/setInfo',       // 更新用户信息（使用 setInfo 接口）
-    UPLOAD_AVATAR: '/api/user/uploadAvatar' // 上传头像
+    ...ENDPOINTS
   }
 };
 
@@ -341,7 +334,9 @@ async function fetchUserInfo() {
     const response = await request(endpointUrl, {
       method: 'GET',
       header: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        // 兼容部分接口使用 token 字段的写法
+        'token': token
       }
     });
 
@@ -625,7 +620,7 @@ async function uploadAvatar(avatarFilePath) {
 
     return new Promise((resolve) => {
       wx.uploadFile({
-        url: CONFIG.API_BASE_URL + '/api/upload/image',  // 改为正确的接口
+        url: CONFIG.API_BASE_URL + CONFIG.ENDPOINTS.UPLOAD_IMAGE,
         filePath: avatarFilePath,
         name: 'file',  // 改为 file（API 要求的参数名）
         header: {

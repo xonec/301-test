@@ -27,10 +27,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad() {
-    // 检查是否已登录，如果已登录则跳转到首页
+    // 检查是否已登录，如果已登录则尝试自动同步用户信息后跳转到首页
     if (authService.hasValidToken()) {
-      wx.switchTab({
-        url: '/pages/statistics-outer/statistics-outer'
+      authService.autoLogin().then((result) => {
+        if (result.success) {
+          wx.switchTab({
+            url: '/pages/statistics-outer/statistics-outer'
+          });
+        }
       });
     }
   },
