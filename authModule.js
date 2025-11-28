@@ -217,27 +217,6 @@ async function wechatLogin() {
   });
 }
 
-// 获取用户资料（需要用户授权）
-async function getUserProfile() {
-  return new Promise((resolve) => {
-    wx.getUserProfile({
-      desc: '用于完善用户信息',
-      success: (res) => {
-        resolve({
-          success: true,
-          data: res.userInfo
-        });
-      },
-      fail: () => {
-        resolve({
-          success: false,
-          error: '用户拒绝授权'
-        });
-      }
-    });
-  });
-}
-
 // 用户注册
 async function register(nickName, avatarUrl) {
   try {
@@ -341,10 +320,16 @@ async function fetchUserInfo() {
     });
 
     if (response.code === 0) {
-      wx.setStorageSync(USER_INFO_KEY, response.data);
+      const normalizedData = {
+        ...response.data,
+        avatarUrl: response.data.avatar || response.data.avatar_url || response.data.avatarUrl || response.data.url || '',
+        nickName: response.data.nick_name || response.data.nickname || response.data.nickName || response.data.nick || ''
+      };
+
+      wx.setStorageSync(USER_INFO_KEY, normalizedData);
       return {
         success: true,
-        data: response.data
+        data: normalizedData
       };
     } else {
       return {
@@ -852,7 +837,6 @@ module.exports = {
   getUserInfo,
   getToken,
   wechatLogin,
-  getUserProfile,
   register,
   saveAvatarLocally,
   getLocalAvatarPath,
