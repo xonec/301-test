@@ -503,7 +503,7 @@ async function saveAvatarLocally(avatarFilePath) {
     // 生成目标路径
     const timestamp = Date.now();
     const targetPath = `${wx.env.USER_DATA_PATH}/avatar_${timestamp}.png`;
-    
+
     console.log('[saveAvatarLocally] 开始保存头像', {
       source: avatarFilePath,
       target: targetPath
@@ -511,40 +511,25 @@ async function saveAvatarLocally(avatarFilePath) {
 
     return new Promise((resolve) => {
       const fs = wx.getFileSystemManager();
-      
-      // 读取源文件
-      fs.readFile({
-        filePath: avatarFilePath,
-        encoding: 'binary',
-        success: (res) => {
-          // 写入到本地缓存
-          fs.writeFile({
-            filePath: targetPath,
-            data: res.data,
-            encoding: 'binary',
-            success: () => {
-              console.log('[saveAvatarLocally] 保存成功', { targetPath });
-              // 保存路径到 storage
-              wx.setStorageSync(LOCAL_AVATAR_KEY, targetPath);
-              resolve({
-                success: true,
-                avatarPath: targetPath
-              });
-            },
-            fail: (err) => {
-              console.error('[saveAvatarLocally] 写入失败', err);
-              resolve({
-                success: false,
-                error: err.errMsg || '保存失败'
-              });
-            }
+
+      // 直接使用 saveFile 复制文件，避免二进制读写造成的图片损坏
+      fs.saveFile({
+        tempFilePath: avatarFilePath,
+        filePath: targetPath,
+        success: ({ savedFilePath }) => {
+          const finalPath = savedFilePath || targetPath;
+          console.log('[saveAvatarLocally] 保存成功', { targetPath: finalPath });
+          wx.setStorageSync(LOCAL_AVATAR_KEY, finalPath);
+          resolve({
+            success: true,
+            avatarPath: finalPath
           });
         },
         fail: (err) => {
-          console.error('[saveAvatarLocally] 读取失败', err);
+          console.error('[saveAvatarLocally] 保存失败', err);
           resolve({
             success: false,
-            error: err.errMsg || '读取失败'
+            error: err.errMsg || '保存失败'
           });
         }
       });
