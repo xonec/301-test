@@ -217,27 +217,6 @@ async function wechatLogin() {
   });
 }
 
-// 获取用户资料（需要用户授权）
-async function getUserProfile() {
-  return new Promise((resolve) => {
-    wx.getUserProfile({
-      desc: '用于完善用户信息',
-      success: (res) => {
-        resolve({
-          success: true,
-          data: res.userInfo
-        });
-      },
-      fail: () => {
-        resolve({
-          success: false,
-          error: '用户拒绝授权'
-        });
-      }
-    });
-  });
-}
-
 // 用户注册
 async function register(nickName, avatarUrl) {
   try {
@@ -341,10 +320,16 @@ async function fetchUserInfo() {
     });
 
     if (response.code === 0) {
-      wx.setStorageSync(USER_INFO_KEY, response.data);
+      const normalizedData = {
+        ...response.data,
+        avatarUrl: response.data.avatar || response.data.avatar_url || response.data.avatarUrl || response.data.url || '',
+        nickName: response.data.nick_name || response.data.nickname || response.data.nickName || response.data.nick || ''
+      };
+
+      wx.setStorageSync(USER_INFO_KEY, normalizedData);
       return {
         success: true,
-        data: response.data
+        data: normalizedData
       };
     } else {
       return {
@@ -482,18 +467,31 @@ function request(url, options = {}) {
       data: requestData,
       header: headerConfig,
       success: (res) => {
+        const { statusCode, data } = res;
+
+        // 对非 2xx 状态码进行显式错误处理，避免 404 等返回被误判为成功
+        if (statusCode < 200 || statusCode >= 300) {
+          console.error('[request] HTTP 状态异常', {
+            url: fullUrl,
+            statusCode,
+            dataSnippet: typeof data === 'string' ? data.substring(0, 200) : data
+          });
+          reject(new Error(`HTTP ${statusCode}: 请求失败 (${fullUrl})`));
+          return;
+        }
+
         console.log('[request] 响应成功', {
           url: fullUrl,
-          statusCode: res.statusCode,
-          data: res.data
+          statusCode,
+          data
         });
-        
+
         // 检查特殊情况：HTTP 200 但响应不是 JSON
-        if (typeof res.data === 'string') {
-          console.warn('[request] 响应是字符串', res.data.substring(0, 200));
+        if (typeof data === 'string') {
+          console.warn('[request] 响应是字符串', data.substring(0, 200));
         }
-        
-        resolve(res.data);
+
+        resolve(data);
       },
       fail: (err) => {
         const errorMessage = err.errMsg || '请求失败';
@@ -698,17 +696,37 @@ async function updateUser(nickname, avatarUrl) {
       };
     }
 
+    // 如果头像是本地文件路径，先上传获取后端可访问的 URL
+    let finalAvatarUrl = avatarUrl;
+    const isLocalAvatar = avatarUrl && (avatarUrl.startsWith('wxfile://') || avatarUrl.startsWith('file://'));
+
+    if (isLocalAvatar) {
+      console.log('[updateUser] 检测到本地头像，开始上传以获取可访问 URL', { avatarUrl });
+      const uploadResult = await uploadAvatar(avatarUrl);
+
+      if (!uploadResult.success || !uploadResult.avatarUrl) {
+        console.error('[updateUser] 本地头像上传失败，终止更新', uploadResult);
+        return {
+          success: false,
+          error: uploadResult?.error || '头像上传失败'
+        };
+      }
+
+      finalAvatarUrl = uploadResult.avatarUrl;
+      console.log('[updateUser] 上传成功，使用后端返回的头像 URL 更新信息', { finalAvatarUrl });
+    }
+
     // 使用 multipart/form-data 格式发送请求
     console.log('准备更新用户信息:', {
       url: CONFIG.ENDPOINTS.UPDATE_USER,
       nickname: nickname,
-      avatar: avatarUrl,
+      avatar: finalAvatarUrl,
       token: token ? '已设置' : '未设置'
     });
     console.log('\n========== updateUser 调试信息 =========');
     console.log('Token:', token ? token.substring(0, 20) + '...' : '不存在');
     console.log('使用新接口 /api/user/setInfo');
-    
+
     // 使用新接口 /api/user/setInfo
     // 需要分别为 nickname 和 avatar 发送两个请求
     
@@ -758,7 +776,7 @@ async function updateUser(nickname, avatarUrl) {
         method: 'POST',
         data: {
           field: 'avatar',
-          value: avatarUrl
+          value: finalAvatarUrl
         },
         header: {
           'token': token,
@@ -795,7 +813,7 @@ async function updateUser(nickname, avatarUrl) {
     const updatedInfo = {
       ...currentInfo,
       nickname: nickname,
-      avatar: avatarUrl
+      avatar: finalAvatarUrl
     };
     wx.setStorageSync(USER_INFO_KEY, updatedInfo);
 
@@ -852,7 +870,6 @@ module.exports = {
   getUserInfo,
   getToken,
   wechatLogin,
-  getUserProfile,
   register,
   saveAvatarLocally,
   getLocalAvatarPath,

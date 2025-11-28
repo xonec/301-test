@@ -99,31 +99,6 @@ Page({
   },
 
   /**
-   * 获取用户资料
-   */
-  async onGetUserProfile() {
-    try {
-      const result = await authService.getUserProfile();
-      
-      if (result.success) {
-        this.setData({
-          'registerForm.nickName': result.data.nickName,
-          'registerForm.avatarUrl': result.data.avatarUrl
-        });
-
-        wx.showToast({
-          title: '资料获取成功',
-          icon: 'success'
-        });
-      } else {
-        this.setData({ error: result.error });
-      }
-    } catch (error) {
-      this.setData({ error: error.message });
-    }
-  },
-
-  /**
    * 处理下拉头像
    * @param {Object} e - 事件对象
    */
@@ -206,7 +181,9 @@ Page({
       let finalAvatarUrl = avatarUrl;
       let localAvatarPath = null;
       
-      if (avatarUrl.startsWith('file://')) {
+      const isLocalAvatar = avatarUrl.startsWith('file://') || avatarUrl.startsWith('wxfile://');
+
+      if (isLocalAvatar) {
         console.log('[登录页] 检测到本地文件，开始保存到本地缓存');
         const saveResult = await authService.saveAvatarLocally(avatarUrl);
         

@@ -134,26 +134,6 @@ async function wechatLogin() {
  * 获取用户资料（需要用户授权）
  * @returns {Promise<Object>} 用户资料 {nickName, avatarUrl, gender}
  */
-async function getUserProfile() {
-  return new Promise((resolve) => {
-    wx.getUserProfile({
-      desc: '用于完善用户信息',
-      success: (res) => {
-        resolve({
-          success: true,
-          data: res.userInfo
-        });
-      },
-      fail: () => {
-        resolve({
-          success: false,
-          error: '用户拒绝授权'
-        });
-      }
-    });
-  });
-}
-
 /**
  * 用户注册
  * @param {string} nickName - 昵称
@@ -228,11 +208,17 @@ async function fetchUserInfo() {
     });
 
     if (response.code === 0) {
+      const normalizedData = {
+        ...response.data,
+        avatarUrl: response.data.avatar || response.data.avatar_url || response.data.avatarUrl || response.data.url || '',
+        nickName: response.data.nick_name || response.data.nickname || response.data.nickName || response.data.nick || ''
+      };
+
       // 更新本地存储的用户信息
-      wx.setStorageSync(USER_INFO_KEY, response.data);
+      wx.setStorageSync(USER_INFO_KEY, normalizedData);
       return {
         success: true,
-        data: response.data
+        data: normalizedData
       };
     } else {
       return {
@@ -339,7 +325,19 @@ function request(url, options = {}) {
         ...(options.header || {})
       },
       success: (res) => {
-        resolve(res.data);
+        const { statusCode, data } = res;
+
+        if (statusCode < 200 || statusCode >= 300) {
+          console.error('[request] HTTP 状态异常', {
+            url: fullUrl,
+            statusCode,
+            dataSnippet: typeof data === 'string' ? data.substring(0, 200) : data
+          });
+          reject(new Error(`HTTP ${statusCode}: 请求失败 (${fullUrl})`));
+          return;
+        }
+
+        resolve(data);
       },
       fail: (err) => {
         reject(new Error(err.errMsg || '请求失败'));
@@ -392,7 +390,6 @@ module.exports = {
   getUserInfo,
   getToken,
   wechatLogin,
-  getUserProfile,
   register,
   fetchUserInfo,
   refreshToken,
